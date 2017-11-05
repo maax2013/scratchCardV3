@@ -32,6 +32,10 @@ var PrizesManager = {
         var multiplier = this.getRandomWeighted(values, weights);
 
         this.getFinalPrizes(prizeValue,multiplier);
+
+        if(this.finalPrizes && this.totalMatches>0)
+            return this.getFinalPrizesObj();//>>>>>>>>>>>>>
+        else return null;//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     },
 
     // returns a random value based on weights
@@ -60,8 +64,8 @@ var PrizesManager = {
         var prizeValues = this.getRandomPrizeValues(prizeValue, multiplier);
         if(prizeValues === undefined) {
             console.log('need to change multiplier');
-            multiplier = 1;
-            prizeValues = this.getRandomPrizeValues(prizeValue, multiplier);
+            // multiplier = 1;
+            prizeValues = this.getRandomPrizeValues(prizeValue, 1);
         }
         if(prizeValues){
             this.multiplier = multiplier;
@@ -74,10 +78,16 @@ var PrizesManager = {
             for(var i=0;i<prizeValues.length;i++){
                 this.prizeImageNames.push(this.prizeTypePrefix+prizeValues[i]+'.png');
             }
-        }else{
-            //TODO: signal error
         }
-
+    },
+    getFinalPrizesObj: function(){
+        this.finalPrizesObj = {
+            totalMatches: this.totalMatches,
+            prizeImageNames: this.prizeImageNames,
+            finalPrizes: this.finalPrizes,
+            multiplier: this.multiplier
+        }
+        return this.finalPrizesObj;
     },
 
     // picks at random from a list of permutations that go to specified depth

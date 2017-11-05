@@ -32,11 +32,11 @@ var MatchingNumbersManager = {
         //console.log(this.callerNumbers);
         //console.log(this.loseNumbers);
 
-        this.prizesMnger = Object.create(PrizesManager);
-        this.prizesMnger.parsePrizes(game, pValue, pType);
+        var prizesMnger = Object.create(PrizesManager);
+        this.finalPrizesObj = prizesMnger.parsePrizes(game, pValue, pType);
 
-        if(this.prizesMnger.finalPrizes&&this.prizesMnger.totalMatches>0){
-            this.totalMatches = this.prizesMnger.totalMatches;
+        if(this.finalPrizesObj){
+            this.totalMatches = this.finalPrizesObj.totalMatches;
             this.matchedCallerNumbers = this.callerNumbers.slice(0,this.totalMatches);
             this.yourNumbers = this.matchedCallerNumbers.concat(this.loseNumbers.slice(0,this.yourNumbersCount-this.totalMatches));
 
@@ -61,13 +61,13 @@ var MatchingNumbersManager = {
     },
 
     getDividedPrizeNames: function () {
-        return this.prizesMnger.prizeImageNames;
+        return this.finalPrizesObj.prizeImageNames;
     },
     getDividedPrizeValues: function () {
-        return this.prizesMnger.finalPrizes;
+        return this.finalPrizesObj.finalPrizes;
     },
     getMultiplier: function () {
-        return this.prizesMnger.multiplier;
+        return this.finalPrizesObj.multiplier;
     }
 
 };
