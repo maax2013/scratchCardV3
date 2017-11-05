@@ -35,7 +35,7 @@ var PrizesManager = {
 
         if(this.finalPrizes && this.totalMatches>0)
             return this.getFinalPrizesObj();//>>>>>>>>>>>>>
-        else return null;//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        else throw "Invalid prize!";//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     },
 
     // returns a random value based on weights

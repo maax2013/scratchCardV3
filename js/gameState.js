@@ -181,7 +181,14 @@ var GameState = {
 
 		this.numbersManager = Object.create(MatchingNumbersManager);
 		this.numbersManager.signal.add(this.numbersManagerHandlerV3Path,this);//<<<<<<<<<<<<<<<<<<<<<<<<<
-		this.numbersManager.createNumbersV3Path(this.game,this.prizeValue,this.prizeType);//+++++++++++++
+
+		try{
+			this.numbersManager.createNumbersV3Path(this.game,this.prizeValue,this.prizeType);
+		}
+		catch(err){
+			console.log(err);
+			this.showErrorMessage(err);
+		}
 	},
 
 	numbersManagerHandlerV3Path: function (msg) {
@@ -219,9 +226,6 @@ var GameState = {
 
 			this.game.time.events.add(300, this.readyGame, this);//+++++++++++++
 		}
-		if(msg===this.numbersManager.NUMBER_MANAGER_ERROR){
-			this.showErrorMessage(msg);
-		}
 	},
 	// draws group to main BitmapData and hides the group
 	createSnapshot: function(bmd, group, hideGroup) {
@@ -231,17 +235,6 @@ var GameState = {
 	    if(hideGroup) {
 	        group.visible = false;
 	    }
-	},
-
-	paint: function (x, y) {
-		this.tempNumberObj = this.getNumberObjUnderPointer(this.topNbottomUnits,x,y);
-		if(this.tempNumberObj){
-			if(this.tempNumberObj.hasRevealed()) return;
-			this.tempNumberObj.paintBMD(x,y);
-			if(!this.soundScratch.isPlaying){
-			    this.soundScratch.play("loop");
-			}
-		}
 	},
 
 	enableScratch: function () {
@@ -262,6 +255,16 @@ var GameState = {
 	    	this.mouseMoveValve=0;
 	        this.paint(x,y);
 	    }
+	},
+	paint: function (x, y) {
+		this.tempNumberObj = this.getNumberObjUnderPointer(this.topNbottomUnits,x,y);
+		if(this.tempNumberObj){
+			if(this.tempNumberObj.hasRevealed()) return;
+			this.tempNumberObj.paintBMD(x,y);
+			if(!this.soundScratch.isPlaying){
+			    this.soundScratch.play("loop");
+			}
+		}
 	},
 
 	getNumberObjUnderPointer: function (arry,x,y) {

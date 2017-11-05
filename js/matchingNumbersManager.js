@@ -2,7 +2,6 @@ var PrizesManager = require('./prizesManager');
 
 var MatchingNumbersManager = {
     NUMBER_MANAGER_DONE: 'NUMBER_MANAGER_DONE',
-    NUMBER_MANAGER_ERROR: 'NUMBER_MANAGER_ERROR: invalid prize',
 
     game:null,
     allNumbers:null,
@@ -33,7 +32,15 @@ var MatchingNumbersManager = {
         //console.log(this.loseNumbers);
 
         var prizesMnger = Object.create(PrizesManager);
-        this.finalPrizesObj = prizesMnger.parsePrizes(game, pValue, pType);
+
+        try{
+            this.finalPrizesObj = prizesMnger.parsePrizes(game, pValue, pType);
+        }
+        catch(err){
+            throw err;
+        }
+
+        // this.finalPrizesObj = prizesMnger.parsePrizes(game, pValue, pType);
 
         if(this.finalPrizesObj){
             this.totalMatches = this.finalPrizesObj.totalMatches;
@@ -41,9 +48,6 @@ var MatchingNumbersManager = {
             this.yourNumbers = this.matchedCallerNumbers.concat(this.loseNumbers.slice(0,this.yourNumbersCount-this.totalMatches));
 
             this.signal.dispatch(this.NUMBER_MANAGER_DONE);//>>>>>>>>>>>>>>
-        }else{
-            this.signal.dispatch(this.NUMBER_MANAGER_ERROR);//>>>>>>>>>>>>>>
-            return;
         }
     },
 
