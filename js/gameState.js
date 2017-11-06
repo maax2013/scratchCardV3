@@ -199,7 +199,11 @@ var GameState = {
 			var allPrizes = [];
 
 			for (var i =0;i<allPrizeNames.length;i++){
-				allPrizes.push([allPrizeValues[i], false, this.game.make.sprite(0,0,'prizes',allPrizeNames[i])]);
+				allPrizes.push({
+					prizeValue: allPrizeValues[i],
+					isCash: false,
+					prizeImage: this.game.make.sprite(0,0,'prizes',allPrizeNames[i])
+				})
 			}
 
 			//console.log(allPrizes.toString());
@@ -213,9 +217,8 @@ var GameState = {
 			this.yourNos.setBoardV3Path(this.numbersManager.getYourNumbers(),this.numbersManager.getMatchedCallerNumbers(),allPrizes, this.numbersManager.getMultiplier());
 
 			this.revealBMD = this.game.make.bitmapData(this.world.width, this.world.height);
-			this.createSnapshot(this.revealBMD,this.revealBG,false);
+			this.createSnapshot(this.revealBMD,this.revealBG);
 			this.revealFinalImage = this.scratchGroup.addChild(this.game.add.image(0, 0, this.revealBMD));
-			// this.revealFinalImage.alpha = 0.3;
 
 			this.matchNos.createBMDs(this.revealFinalImage);
 			this.yourNos.createBMDs(this.revealFinalImage);
@@ -227,21 +230,15 @@ var GameState = {
 			this.game.time.events.add(300, this.readyGame, this);//+++++++++++++
 		}
 	},
-	// draws group to main BitmapData and hides the group
-	createSnapshot: function(bmd, group, hideGroup) {
+	// draws group to main BitmapData
+	createSnapshot: function(bmd, group) {
 	    this.game.stage.updateTransform();
 	    bmd.drawGroup(group);
-
-	    if(hideGroup) {
-	        group.visible = false;
-	    }
 	},
 
 	enableScratch: function () {
 		// console.log("enabled");
-
 	    this.game.input.addMoveCallback(this.paintInput, this);
-
 	},
 	disableScratch: function () {
 	    this.game.input.deleteMoveCallback(this.paintInput, this);
@@ -274,9 +271,7 @@ var GameState = {
 	        if(thisNumberObj.isWithinBoundary(x,y)) return thisNumberObj;
 	    }
 	    return null;
-
 	},
-
 
 	showErrorMessage: function (msg) {
 		console.log(msg);
@@ -450,8 +445,7 @@ var GameState = {
 
 		if(this.yourNumbersDone&&this.matchNumbersDone){
 			console.log("all revealed");
-			this.yourNos.paintAll();
-			// this.matchNos.paintAll();
+			this.yourNos.waitThenShowBlink();
 
 			this.soundMagic.play();
 			this.isAutoRevealing = false;

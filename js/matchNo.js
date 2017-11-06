@@ -8,13 +8,13 @@ function MatchNo(game, parentGroup, showGroup,x,y,width,height) {
 	this.unitGroup.y = y;
 	parentGroup.add(this.unitGroup);
 
-	// this.unitBox = new RoundedRectangle(game, 0, 8, width, height-12, 12, 'rgba(208,234,235,1)', false, null);
 	this.unitBox = new RoundedRectangle(game, 0, 6, width, height-10, 12, 'rgba(208,234,235,1)', 'rgba(255,255,255,1)', 3);
 	this.unitGroup.addChild(this.unitBox);
-	// this.unitBox.alpha = 0.5;
 
 	RevealUnit.call(this, game, this.unitGroup, showGroup, false);
 
+	this.unitNumberTextX = width/2+2;
+	this.unitNumberTextY = height/2;
 	var offset = 8;
 	this.rectToCheck = new Phaser.Rectangle(x+offset, y+offset+12,width-offset*2, height-offset*2-50);
 	this.boundaryRect = new Phaser.Rectangle(x, y+6,width, height-10);
@@ -31,15 +31,12 @@ function MatchNo(game, parentGroup, showGroup,x,y,width,height) {
 MatchNo.prototype = Object.create(RevealUnit.prototype);
 MatchNo.prototype.constructor = MatchNo;
 
-MatchNo.prototype.setNumber = function(bmd, n, unitNoX, unitNoY){
+MatchNo.prototype.setNumber = function(n){
 	if(n>0){
-		// this.unitGroup.alpha = 1;
-	    this.showNumber(n, 28, unitNoX, unitNoY, this.boundaryRect,this.rectToCheck);
+	    this.showNumber(n, 28, this.unitNumberTextX, this.unitNumberTextY);
 	}
 	this.unitGroup.alpha = 1;
 };
 
-// MatchNo.prototype.matchBorderKey = 'largeMatchBorder';
-// MatchNo.prototype.sparkleSoundKey = 'whoosh-sparkle';
 
 module.exports = MatchNo;

@@ -14,12 +14,12 @@ function YourNo(game, parentGroup, showGroup,x,y,width,height) {
 
 	this.unitBG = this.unitGroup.addChild(game.make.sprite(-3,-1,'revealBG',game.rnd.integerInRange(0,9)));
 	this.unitBG.scale.set(1.29,1.33);
-	// this.unitBG.alpha = 0;//----------
 	this.unitTop = this.unitGroup.addChild(game.add.group());
-
 
 	RevealUnit.call(this, game, this.unitGroup, showGroup, true);
 
+	this.unitNumberTextX = width/2+2;
+	this.unitNumberTextY = height/2-10;
 	var offset = 8;
 	this.rectToCheck = new Phaser.Rectangle(x+offset, y+offset+12,width-offset*2, height-offset*2-50);
 	this.boundaryRect = new Phaser.Rectangle(x-2, y-2,width+3, height+3);
@@ -36,11 +36,11 @@ function YourNo(game, parentGroup, showGroup,x,y,width,height) {
 YourNo.prototype = Object.create(RevealUnit.prototype);
 YourNo.prototype.constructor = YourNo;
 
-YourNo.prototype.setNumberV3 = function(bmd, n, prize, totalFrames, unitNoX, unitNoY){
+YourNo.prototype.setNumberV3 = function(n, prize, totalFrames){
 	if(prize && n>0){
-	    this.prizeValue = prize[0];
-	    this.isCashPrize = prize[1];
-	    this.cellTop = this.unitTop.addChild(prize[2]);
+	    // this.prizeValue = prize.prizeValue;
+	    // this.isCashPrize = prize.isCash;
+	    this.cellTop = this.unitTop.addChild(prize.prizeImage);
 	}else{
 	    if(n<0){
 	        this.isMultiplier = true;
@@ -51,21 +51,16 @@ YourNo.prototype.setNumberV3 = function(bmd, n, prize, totalFrames, unitNoX, uni
 	}
 	this.cellTop.tint = 0x239323;
 
-	this.showNumber(n, 32, unitNoX, unitNoY, this.boundaryRect,this.rectToCheck);
+	this.showNumber(n, 32, this.unitNumberTextX, this.unitNumberTextY);
 	this.unitGroup.alpha = 1;
 };
 YourNo.prototype.blink = function () {
     //console.log("blink");
-    //this.cellBox.alpha =1;//--------------------
     var blinkTween = this.game.add.tween(this.unitBox).to( { alpha: 0.9 }, 200, Phaser.Easing.Linear.None, true, 0, 3, true);
     blinkTween.onComplete.add(function() {
-        //this.cellBox = new RoundedRectangle(this.game, 10, 0, this.cellWidth+10, this.cellHeight+10, 20, 'rgba(0,0,255,1)', false, null);
         this.unitBox.alpha = 1;
     }, this);
 };
 
-
-// YourNo.prototype.matchBorderKey = 'largeMatchBorder';
-// YourNo.prototype.sparkleSoundKey = 'whoosh-sparkle';
 
 module.exports = YourNo;
