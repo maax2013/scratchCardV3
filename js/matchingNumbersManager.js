@@ -32,15 +32,7 @@ var MatchingNumbersManager = {
         //console.log(this.loseNumbers);
 
         var prizesMnger = Object.create(PrizesManager);
-
-        try{
-            this.finalPrizesObj = prizesMnger.parsePrizes(game, pValue, pType);
-        }
-        catch(err){
-            throw err;
-        }
-
-        // this.finalPrizesObj = prizesMnger.parsePrizes(game, pValue, pType);
+        this.finalPrizesObj = prizesMnger.parsePrizes(game, pValue, pType);
 
         if(this.finalPrizesObj){
             this.totalMatches = this.finalPrizesObj.totalMatches;
